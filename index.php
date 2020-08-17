@@ -29,12 +29,66 @@ $result = preg_replace('/[^a-zA-Z0-9_ -]/s','', $dinner2);
 
 ?> 
 
-<div class="alert alert-info" role="alert"><?php echo $result; ?>
+<div class="alert alert-info" role="alert">Dinner is <strong><?php echo $result; ?></strong>
 
 <br />
 <div class="alert alert-danger" role="alert">
 That doesn't sound good, <a class="alert-link" href="<?php $_SERVER['PHP_SELF']; ?>">try again.</a>
 </div>
+</div>
+<div>
+    <?php
+    $message = '';
+    $error = '';
+
+    if(isset($_POST["submit"]))
+    {
+        if(empty($_POST["title"]))
+        {
+            $error = "<label class='text-danger'>Enter dinner item</label>";
+        }
+        else{
+            if(file_exists('dinner.json'))
+            {
+                $current_data = file_get_contents('dinner.json');
+                $array_data = json_decode($current_data, true);
+                $extra = array(
+                    'title' =>  $_POST['title']
+                );
+                $array_data[] = $extra;
+                $final_data = json_encode($array_data);
+                if(file_put_contents('dinner.json', $final_data))
+                {
+                    $message = "<label class='text-success'>Dinner idea added.</p>";
+                }
+                else{
+                    $error = "JSON file does not exist";
+                }
+            }
+        }
+    }
+    ?>
+    <h3 align=""> Add a dinner idea</h3><br />
+    <form method="post">
+        <?php
+        if(isset($error))
+        {
+            echo $error;
+
+        }
+        ?>
+        <br />
+        <label>Dinner idea</label>
+        <input type="text" name="title" class="form-control" /><br />
+
+        <input type="submit" name="submit" value="Submit" class="btn btn-info" /><br />
+        <?php
+        if(isset($message))
+        {
+            echo $message;
+        }
+        ?>
+    </form>
 </div>
 </body>
 
