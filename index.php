@@ -68,7 +68,7 @@ That doesn't sound good, <a class="alert-link" href="<?php $_SERVER['PHP_SELF'];
         }
     }
     ?>
-    <h3 align=""> Add a dinner idea</h3><br />
+    <h3 align="">Add a dinner idea</h3><br />
     <form method="post">
         <?php
         if(isset($error))
